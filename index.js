@@ -107,19 +107,22 @@ const Status = {
 const BASE = "https://fsa-puppy-bowl.herokuapp.com/api";
 const COHORT = "/2605-RAVEN";
 
-const PLAYER_RESOURCE = "/players";
-const PLAYER_API = BASE + COHORT + PLAYER_RESOURCE;
+const PLAYERS_RESOURCE = "/players";
+const PLAYERS_API = BASE + COHORT + PLAYERS_RESOURCE;
 
-const TEAM_RESOURCE = "/teams";
-const TEAM_API = BASE + COHORT + TEAM_RESOURCE;
+const TEAMS_RESOURCE = "/teams";
+const TEAMS_API = BASE + COHORT + TEAMS_RESOURCE;
 
 /////////////////////////////
 // === STATES ===
 /** @type {Player[]} */
-const players = [];
+let players = [];
+
+/** @type {Player | null} */
+let selectedPlayer = null;
 
 /** @type {Team[]} */
-const teams = [];
+let teams = [];
 
 ////////////////////////////
 // === API FUNCTIONS ===
@@ -129,7 +132,21 @@ const teams = [];
  * Instead, this function should be keeping our state up to date
  */
 const fetchAllPlayers = async () => {
-  //TODO
+  try {
+    const response = await fetch(PLAYERS_API);
+    const responseData = await response.json();
+    const playersData = responseData.data.players;
+
+    const newPlayers = [];
+    for (const player of playersData) {
+      const newPlayer = Object.assign(new Player(), player);
+      newPlayers.push(newPlayer);
+    }
+
+    players = newPlayers;
+  } catch (error) {
+    console.log("Failed to fetch players:", error);
+  }
 };
 
 /**
@@ -143,7 +160,15 @@ const fetchAllPlayers = async () => {
  * Unless we know the id of the player we are trying to fetch, we cannot call fetchSinglePlayer()
  */
 const fetchSinglePlayer = async (playerId) => {
-  //TODO
+  try {
+    const response = await fetch(`${PLAYERS_API}/${playerId}`);
+    const responseData = await response.json();
+    const playerData = responseData.data.player;
+
+    selectedPlayer = Object.assign(new Player(), playerData);
+  } catch (error) {
+    console.log("Failed to fetch player:", error);
+  }
 };
 
 /**
@@ -162,7 +187,20 @@ const fetchSinglePlayer = async (playerId) => {
  */
 
 const addNewPlayer = async (newPlayer) => {
-  //TODO
+  try {
+    const response = await fetch(PLAYERS_API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newPlayer),
+    });
+
+    fetchAllPlayers();
+    render();
+  } catch (error) {
+    console.log("Failed to add player:", error);
+  }
 };
 
 /**
@@ -177,11 +215,44 @@ const addNewPlayer = async (newPlayer) => {
  */
 
 const removePlayer = async (playerId) => {
-  //TODO
+  try {
+    const response = await fetch(`${PLAYERS_API}/${playerId}`, {
+      method: "DELETE",
+    });
+
+    fetchAllPlayers();
+    render();
+  } catch (error) {
+    console.log("Failed to remove player:", error);
+  }
+};
+
+/**
+ * Fetches all Teams from the API.
+ * This function should not be doing any rendering
+ * Instead, this function should be keeping our state up to date
+ */
+const fetchAllTeams = async () => {
+  try {
+    const response = await fetch(TEAMS_API);
+    const responseData = await response.json();
+    const teamsData = responseData.data.teams;
+
+    const newTeams = [];
+    for (const team of teamsData) {
+      const newTeam = Object.assign(new Team(), team);
+      newTeams.push(newTeam);
+    }
+
+    teams = newTeams;
+  } catch (error) {
+    console.log("Failed to fetch teams:", error);
+  }
 };
 
 // === COMPONENT FUNCTIONS ===
 
+// === RENDER AND INIT
 /**
  * Updates html to display a list of all players or a single player page.
  *
@@ -208,7 +279,8 @@ const render = () => {
  */
 const init = async () => {
   //Before we render, what do we always need?
-
+  fetchAllPlayers();
+  fetchAllTeams();
   render();
 };
 
