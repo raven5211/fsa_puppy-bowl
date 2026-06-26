@@ -196,7 +196,8 @@ const addNewPlayer = async (newPlayer) => {
       body: JSON.stringify(newPlayer),
     });
 
-    fetchAllPlayers();
+    await fetchAllPlayers();
+    await fetchAllTeams();
     render();
   } catch (error) {
     console.log("Failed to add player:", error);
@@ -220,7 +221,7 @@ const removePlayer = async (playerId) => {
       method: "DELETE",
     });
 
-    fetchAllPlayers();
+    await fetchAllPlayers();
     render();
   } catch (error) {
     console.log("Failed to remove player:", error);
@@ -251,6 +252,97 @@ const fetchAllTeams = async () => {
 };
 
 // === COMPONENT FUNCTIONS ===
+/**
+ * creates a div element that represents all teams and unafiliated players
+ * @returns {HTMLDivElement}
+ */
+function TeamsList() {
+  const $div = document.createElement("div");
+  $div.id = "teamsList";
+
+  const freeAgents = players.filter((player) => player.teamId === null);
+  const sections = [...teams, freeAgents];
+
+  const $teams = sections.map(TeamGrid);
+  $div.replaceChildren(...$teams);
+
+  return $div;
+}
+
+/**
+ * creates a div element that represents a group of players
+ * @param {Team | Player[]} group
+ * @returns {HTMLDetailsElement}
+ */
+function TeamGrid(group) {
+  const $details = document.createElement("details");
+  $details.classList.add("TeamGrid");
+
+  $details.innerHTML = `
+    <TeamName></TeamName>
+    <PlayerGrid></PlayerGrid>
+  `;
+
+  console.log(Array.isArray(group), group[0] instanceof Player);
+
+  const $TeamName = document.createElement("summary");
+  const $PlayerGrid = document.createElement("div");
+  $PlayerGrid.classList.add("PlayerGrid");
+  if (group instanceof Team) {
+    $details.id = group.id;
+    $TeamName.innerHTML = `${group.name}`;
+    $details.querySelector("TeamName").replaceWith($TeamName);
+
+    if (group.players.length === 0) {
+      const $p = document.createElement("p");
+      $p.innerHTML = "There are no players in this group yet...";
+      $details.querySelector("PlayerGrid").replaceWith($p);
+    } else {
+      playerArr = group.players.map(PlayerCard);
+      $PlayerGrid.replaceChildren(...playerArr);
+      $details.querySelector("PlayerGrid").replaceWith($PlayerGrid);
+    }
+  } else if (
+    Array.isArray(group) &&
+    (group[0] instanceof Player || group.length === 0)
+  ) {
+    $details.id = "FreeAgents";
+    $TeamName.innerHTML = "Free Agents";
+    $details.querySelector("TeamName").replaceWith($TeamName);
+
+    if (group.length === 0) {
+      const $p = document.createElement("p");
+      $p.innerHTML = "There are no players in this group yet...";
+      $details.querySelector("PlayerGrid").replaceWith($p);
+    } else {
+      playerArr = group.map(PlayerCard);
+      $PlayerGrid.replaceChildren(...playerArr);
+      $details.querySelector("PlayerGrid").replaceWith($PlayerGrid);
+    }
+  } else {
+    console.log("ERROR: TeamGrid(group): invalid group type");
+    return null;
+  }
+
+  return $details;
+}
+
+/**
+ * creats a div element that represents a player
+ * @param {Player} player
+ * @returns {HTMLDivElement}
+ */
+function PlayerCard(player) {
+  const $div = document.createElement("div");
+  $div.classList.add("PlayerCard");
+  $div.id = player.id;
+  $div.innerHTML = `
+    <img src=${player.imageUrl} />
+    <p>${player.name}</p>
+  `;
+
+  return $div;
+}
 
 // === RENDER AND INIT
 /**
@@ -270,7 +362,25 @@ const fetchAllTeams = async () => {
  *
  */
 const render = () => {
-  // TODO
+  const $app = document.querySelector("#app");
+  $app.innerHTML = `
+    <h1>THE PUPPY BOWL</h1>
+    <main>
+      <section id="allPlayers">
+        <h2>Teams</h2>
+        <TeamsList></TeamsList>
+        <hr />
+        <h3>Add a new player</h3>
+        <createForm></createForm>
+      </section>
+      <section id="selected">
+        <PlayerCard></PlayerCard>
+        <deleteButton></deleteButton>
+      </section>
+    </main>
+  `;
+
+  $app.querySelector("TeamsList").replaceWith(TeamsList());
 };
 
 /**
@@ -279,8 +389,8 @@ const render = () => {
  */
 const init = async () => {
   //Before we render, what do we always need?
-  fetchAllPlayers();
-  fetchAllTeams();
+  await fetchAllPlayers();
+  await fetchAllTeams();
   render();
 };
 
