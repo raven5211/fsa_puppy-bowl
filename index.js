@@ -124,6 +124,9 @@ let selectedPlayer = null;
 /** @type {Team[]} */
 let teams = [];
 
+/** @type {Map<number, boolean>} */
+let groupsDetailsOpen = new Map();
+
 ////////////////////////////
 // === API FUNCTIONS ===
 /**
@@ -144,6 +147,7 @@ const fetchAllPlayers = async () => {
     }
 
     players = newPlayers;
+    groupsDetailsOpen.set(0, false);
   } catch (error) {
     console.log("Failed to fetch players:", error);
   }
@@ -243,6 +247,7 @@ const fetchAllTeams = async () => {
     for (const team of teamsData) {
       const newTeam = Object.assign(new Team(), team);
       newTeams.push(newTeam);
+      groupsDetailsOpen.set(newTeam.id, false);
     }
 
     teams = newTeams;
@@ -283,8 +288,6 @@ function TeamGrid(group) {
     <PlayerGrid></PlayerGrid>
   `;
 
-  console.log(Array.isArray(group), group[0] instanceof Player);
-
   const $TeamName = document.createElement("summary");
   const $PlayerGrid = document.createElement("div");
   $PlayerGrid.classList.add("PlayerGrid");
@@ -324,21 +327,83 @@ function TeamGrid(group) {
     return null;
   }
 
+  const groupId = group instanceof Team ? group.id : 0;
+
+  $details.open = groupsDetailsOpen.get(groupId);
+  $details.addEventListener("toggle", (event) => {
+    if (event.newState === "open") {
+      groupsDetailsOpen.set(groupId, true);
+    } else {
+      groupsDetailsOpen.set(groupId, false);
+    }
+  });
+
   return $details;
 }
 
 /**
- * creats a div element that represents a player
+ * creates a div element that represents a player
  * @param {Player} player
  * @returns {HTMLDivElement}
  */
 function PlayerCard(player) {
   const $div = document.createElement("div");
   $div.classList.add("PlayerCard");
+
+  if (selectedPlayer !== null && player.id === selectedPlayer.id) {
+    $div.classList.add("selected");
+  }
+
   $div.id = player.id;
   $div.innerHTML = `
     <img src=${player.imageUrl} />
     <p>${player.name}</p>
+  `;
+
+  $div.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    // if (selectedPlayer !== null) {
+    //   document.querySelector(".selected").classList.remove("selected");
+    // }
+    selectedPlayer = players.find((player) => player.id == $div.id);
+    $div.classList.add("selected");
+    render();
+  });
+
+  return $div;
+}
+
+/**
+ * creates an HTML element to represent the selected player
+ * @returns {HTMLParagraphElement | HTMLDivElement}
+ */
+function PlayerInfo() {
+  if (!selectedPlayer) {
+    const $p = document.createElement("p");
+    $p.innerHTML = "Please select a player to see their info.";
+    return $p;
+  }
+
+  const $div = document.createElement("div");
+  $div.classList.add("playerInfo");
+
+  const imgURL = selectedPlayer.imageUrl;
+  const name = selectedPlayer.name;
+  const id = selectedPlayer.id;
+  const breed = selectedPlayer.breed;
+  const team = teams.find((team) => team.id === selectedPlayer.teamId).name;
+  const status = selectedPlayer.status;
+
+  $div.innerHTML = `
+    <img src="${imgURL}" />
+    <div>
+      <p><b>Name:</b> ${name}</p>
+      <p><b>ID:</b> ${id}</p>
+      <p><b>Breed:</b> ${breed}</p>
+      <p><b>Team:</b> ${team}</p>
+      <p><b>Status</b>: ${status}</p>
+    </div>
   `;
 
   return $div;
@@ -374,13 +439,15 @@ const render = () => {
         <createForm></createForm>
       </section>
       <section id="selected">
-        <PlayerCard></PlayerCard>
+        <h2>Player Info</h2>
+        <PlayerInfo></PlayerInfo>
         <deleteButton></deleteButton>
       </section>
     </main>
   `;
 
   $app.querySelector("TeamsList").replaceWith(TeamsList());
+  $app.querySelector("PlayerInfo").replaceWith(PlayerInfo());
 };
 
 /**

@@ -35,16 +35,38 @@ summary {
   flex-direction: column;
   align-items: center;
   cursor: pointer;
+  border: 1px dashed black;
+  border-radius: 1rem;
+}
+
+.selected {
+  border: 2px solid black;
 }
 
 .TeamGrid p {
-  margin: 0;
-  margin-top: 0.5rem;
+  margin: 0.5rem 0;
   font-size: 1.5rem;
 }
 
 img {
   height: 90%;
   width: 100%;
+  border-radius: 1rem 1rem 0 0;
+}
+
+.playerInfo {
+  position: sticky;
+  top: 1rem;
+
+  padding: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  border: 1px solid black;
+  border-radius: 1.5rem;
+}
+
+.playerInfo img {
+  height: 100%;
   border-radius: 1rem;
 }
