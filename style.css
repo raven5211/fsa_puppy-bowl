@@ -6,10 +6,24 @@ h1 {
   justify-self: center;
 }
 
+h2 {
+  margin-top: 0;
+}
+
 main {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  display: flex;
+}
+
+#allPlayers {
+  min-width: 50%;
+  padding: 1rem;
+  border-right: 3px dotted black;
+}
+
+#selectedPlayer {
+  min-width: 33%;
+  flex-grow: 1;
+  padding: 1rem;
 }
 
 .TeamGrid {
@@ -25,7 +39,7 @@ summary {
 
 .PlayerGrid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minMax(min(100px, 100%), 1fr));
   gap: 1rem;
   margin-top: 1rem;
 }
@@ -35,8 +49,9 @@ summary {
   flex-direction: column;
   align-items: center;
   cursor: pointer;
-  border: 1px dashed black;
-  border-radius: 1rem;
+  border: 2px dashed darkgray;
+  border-radius: 10%;
+  background-color: gainsboro;
 }
 
 .selected {
@@ -49,9 +64,9 @@ summary {
 }
 
 img {
-  height: 90%;
+  height: 100%;
   width: 100%;
-  border-radius: 1rem 1rem 0 0;
+  border-radius: 10% 10% 0 0;
 }
 
 .playerInfo {
@@ -59,6 +74,7 @@ img {
   top: 1rem;
 
   padding: 1rem;
+  margin: 1rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
@@ -66,7 +82,51 @@ img {
   border-radius: 1.5rem;
 }
 
-.playerInfo img {
-  height: 100%;
+.playerInfoDefault {
+  padding: 1rem;
+  margin: 1rem;
+  border: 1px solid black;
   border-radius: 1rem;
+}
+
+.playerInfo img {
+  max-height: 100%;
+  border-radius: 1rem;
+  align-self: center;
+}
+
+@media (600px <= width <= 750px) {
+  main {
+    display: flex;
+  }
+
+  .TeamGrid {
+    flex-grow: 1;
+  }
+
+  .playerInfo {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .playerInfo img {
+    max-height: 50vh;
+    width: fit-content;
+  }
+}
+
+@media (width < 600px) {
+  main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #allPlayers {
+    border-right: none;
+  }
+
+  .playerInfo {
+    display: flex;
+    flex-direction: column;
+  }
 }

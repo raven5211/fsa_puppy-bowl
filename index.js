@@ -381,6 +381,7 @@ function PlayerCard(player) {
 function PlayerInfo() {
   if (!selectedPlayer) {
     const $p = document.createElement("p");
+    $p.classList.add("playerInfoDefault");
     $p.innerHTML = "Please select a player to see their info.";
     return $p;
   }
@@ -438,7 +439,7 @@ const render = () => {
         <h3>Add a new player</h3>
         <createForm></createForm>
       </section>
-      <section id="selected">
+      <section id="selectedPlayer">
         <h2>Player Info</h2>
         <PlayerInfo></PlayerInfo>
         <deleteButton></deleteButton>
