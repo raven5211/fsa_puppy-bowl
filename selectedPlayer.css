@@ -30,6 +30,11 @@
   align-self: center;
 }
 
+.deleteButton {
+  border: 1px solid black;
+  border-radius: 0.33rem;
+}
+
 @media (600px <= width <= 750px) {
   .playerInfo {
     display: flex;
