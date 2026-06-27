@@ -58,6 +58,10 @@ summary {
   border: 2px solid black;
 }
 
+.selected img {
+  border-bottom: 2px solid black;
+}
+
 .TeamGrid p {
   margin: 0.5rem 0;
   font-size: 1.5rem;
@@ -95,6 +99,23 @@ img {
   align-self: center;
 }
 
+.smallMode {
+  display: none;
+}
+
+.largeMode {
+  display: flex;
+}
+
+.tabBar {
+  display: flex;
+}
+
+.tabButton {
+  flex-grow: 1;
+  padding: 0.5rem;
+}
+
 @media (600px <= width <= 750px) {
   main {
     display: flex;
@@ -119,6 +140,14 @@ img {
   main {
     display: flex;
     flex-direction: column;
+  }
+
+  .largeMode {
+    display: none;
+  }
+
+  .smallMode {
+    display: flex;
   }
 
   #allPlayers {

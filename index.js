@@ -127,6 +127,11 @@ let teams = [];
 /** @type {Map<number, boolean>} */
 let groupsDetailsOpen = new Map();
 
+let currentSection = "allPlayers";
+let sections = new Map();
+sections.set("allPlayers", Section1);
+sections.set("selectedPlayer", Section2);
+
 ////////////////////////////
 // === API FUNCTIONS ===
 /**
@@ -257,6 +262,87 @@ const fetchAllTeams = async () => {
 };
 
 // === COMPONENT FUNCTIONS ===
+// === main versions ===
+function MainLarge() {
+  const $main = document.createElement("main");
+  $main.classList.add("largeMode");
+  $main.innerHTML = `
+    <Section1></Section1>
+    <Section2></Section2>
+  `;
+
+  $main.querySelector("Section1").replaceWith(Section1());
+  $main.querySelector("Section2").replaceWith(Section2());
+
+  return $main;
+}
+
+function MainSmall() {
+  const $main = document.createElement("main");
+  $main.classList.add("smallMode");
+  $main.innerHTML = `
+    <TabBar></TabBar>
+    <section></section>
+  `;
+
+  $main.querySelector("TabBar").replaceWith(TabBar());
+  $main.querySelector("section").replaceWith(sections.get(currentSection)());
+
+  return $main;
+}
+
+// === tab bar ===
+function TabBar() {
+  const $div = document.createElement("div");
+  $div.classList.add("tabBar");
+  $div.innerHTML = `
+    <TabButton1></TabButton1>
+    <TabButton2></TabButton2>
+  `;
+
+  $div.querySelector("TabButton1").replaceWith(TabButton("allPlayers"));
+  $div.querySelector("TabButton2").replaceWith(TabButton("selectedPlayer"));
+
+  return $div;
+}
+
+function TabButton(sectionName) {
+  const $button = document.createElement("button");
+  $button.classList.add("tabButton");
+
+  if (sectionName === "allPlayers") {
+    $button.innerHTML = "All Players";
+  } else if (sectionName === "selectedPlayer") {
+    $button.innerHTML = "Selected Player";
+  }
+
+  $button.addEventListener("click", () => {
+    if (currentSection !== sectionName) {
+      currentSection = sectionName;
+      render();
+    }
+  });
+
+  return $button;
+}
+
+// === Section 1 ---
+function Section1() {
+  const $section = document.createElement("section");
+  $section.id = "allPlayers";
+  $section.innerHTML = `
+    <h2>Teams</h2>
+    <TeamsList></TeamsList>
+    <hr />
+    <h3>Add a new player</h3>
+    <createForm></createForm>
+  `;
+
+  $section.querySelector("TeamsList").replaceWith(TeamsList());
+
+  return $section;
+}
+
 /**
  * creates a div element that represents all teams and unafiliated players
  * @returns {HTMLDivElement}
@@ -363,15 +449,27 @@ function PlayerCard(player) {
   $div.addEventListener("click", (event) => {
     event.preventDefault();
 
-    // if (selectedPlayer !== null) {
-    //   document.querySelector(".selected").classList.remove("selected");
-    // }
     selectedPlayer = players.find((player) => player.id == $div.id);
     $div.classList.add("selected");
+    currentSection = "selectedPlayer";
     render();
   });
 
   return $div;
+}
+
+// === Section 2 ===
+function Section2() {
+  const $section = document.createElement("section");
+  $section.id = "selectedPlayer";
+  $section.innerHTML = `
+    <h2>Player Info</h2>
+    <PlayerInfo></PlayerInfo>
+    <DeleteButton></DeleteButton>
+  `;
+
+  $section.querySelector("PlayerInfo").replaceWith(PlayerInfo());
+  return $section;
 }
 
 /**
@@ -410,6 +508,22 @@ function PlayerInfo() {
   return $div;
 }
 
+// === tab functions ===
+function openSection(event, sectionName) {
+  const $sections = document.querySelectorAll(".tabContent");
+  for (const $section of $sections) {
+    $section.style.display = "none";
+  }
+  const $buttons = document.querySelectorAll(".tabLinks");
+  for (const $button of $buttons) {
+    $button.classList.remove("active");
+  }
+
+  const $selectedSection = document.querySelector(`#${sectionName}`);
+  $selectedSection.style.display = "inline-block";
+  event.currentTarget.classList.add("active");
+}
+
 // === RENDER AND INIT
 /**
  * Updates html to display a list of all players or a single player page.
@@ -431,24 +545,10 @@ const render = () => {
   const $app = document.querySelector("#app");
   $app.innerHTML = `
     <h1>THE PUPPY BOWL</h1>
-    <main>
-      <section id="allPlayers">
-        <h2>Teams</h2>
-        <TeamsList></TeamsList>
-        <hr />
-        <h3>Add a new player</h3>
-        <createForm></createForm>
-      </section>
-      <section id="selectedPlayer">
-        <h2>Player Info</h2>
-        <PlayerInfo></PlayerInfo>
-        <deleteButton></deleteButton>
-      </section>
-    </main>
+    <main></main>
   `;
 
-  $app.querySelector("TeamsList").replaceWith(TeamsList());
-  $app.querySelector("PlayerInfo").replaceWith(PlayerInfo());
+  $app.querySelector("main").replaceWith(MainLarge(), MainSmall());
 };
 
 /**
