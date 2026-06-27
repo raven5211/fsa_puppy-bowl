@@ -290,10 +290,15 @@ async function submitForm(form) {
   const breed = formData.get("breed");
   const status = formData.get("status");
   let imageUrl = formData.get("imageUrl");
-  const team = formData.get("team");
+  let team = formData.get("team");
 
   if (imageUrl === null) {
-    imageUrl = "./puppy.jpg";
+    imageUrl =
+      "https://github.com/raven5211/fsa_puppy-bowl/blob/main/puppy.jpg?raw=true";
+  }
+
+  if (team === "null") {
+    team = null;
   }
 
   const newPlayer = {
@@ -304,25 +309,28 @@ async function submitForm(form) {
     teamId: team,
   };
 
-  console.log(newPlayer);
   const response = await addNewPlayer(newPlayer);
-
   if (response !== null) {
-    await fetchAllPlayers();
-    await fetchAllTeams();
-
     const formData = await response.json();
-    const targetId = formData.data.newPlayer.id;
-    const players = states.players;
 
-    states.selectedPlayer = players.find((player) => player.id === targetId);
-    states.currentSection = "selectedPlayer";
+    if (formData.success) {
+      await fetchAllPlayers();
+      await fetchAllTeams();
 
-    console.log();
+      const targetId = formData.data.newPlayer.id;
+      const players = states.players;
 
-    await render(states.selectedPlayer);
-    return newPlayer;
+      states.selectedPlayer = players.find((player) => player.id === targetId);
+      states.currentSection = "selectedPlayer";
+
+      await render(states.selectedPlayer);
+      return newPlayer;
+    } else {
+      alert("Server Error 1: Failed to create player!");
+      return false;
+    }
   } else {
+    alert("Server Error 2: Failed to create player!");
     return null;
   }
 }
@@ -370,13 +378,15 @@ function PlayerInfo() {
   const $div = document.createElement("div");
   $div.classList.add("playerInfo");
 
-  const imgURL = states.selectedPlayer.imageUrl;
-  const name = states.selectedPlayer.name;
-  const id = states.selectedPlayer.id;
-  const breed = states.selectedPlayer.breed;
+  const selectedPlayer = states.selectedPlayer;
+
+  const imgURL = selectedPlayer.imageUrl;
+  const name = selectedPlayer.name;
+  const id = selectedPlayer.id;
+  const breed = selectedPlayer.breed;
   let team;
-  if (states.selectedPlayer.teamId === null) {
-    team = null;
+  if (selectedPlayer.teamId === null) {
+    team = "none";
   } else {
     const selectedId = states.selectedPlayer.teamId;
     const teamObj = states.teams.find((team) => team.id === selectedId);
