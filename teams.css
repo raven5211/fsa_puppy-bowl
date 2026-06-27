@@ -1,0 +1,63 @@
+#allPlayers {
+  min-width: 50%;
+  padding: 1rem;
+  border-right: 3px dotted black;
+}
+
+.TeamsList {
+  display: flex;
+  flex-direction: column;
+}
+
+.TeamGrid {
+  margin: 1rem;
+  padding: 1rem;
+  border: 1px solid black;
+  border-radius: 1rem;
+}
+
+summary {
+  font-size: 2rem;
+}
+
+.PlayerGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minMax(min(100px, 100%), 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.PlayerCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  border: 2px dashed darkgray;
+  border-radius: 10%;
+  background-color: gainsboro;
+}
+
+.selected {
+  border: 2px solid black;
+}
+
+.selected img {
+  border-bottom: 2px solid black;
+}
+
+.TeamGrid p {
+  margin: 0.5rem 0;
+  font-size: 1.5rem;
+}
+
+@media (600px <= width <= 750px) {
+  .TeamGrid {
+    flex-grow: 1;
+  }
+}
+
+@media (width < 600px) {
+  #allPlayers {
+    border-right: none;
+  }
+}

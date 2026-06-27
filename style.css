@@ -1,138 +1,36 @@
+.smallMode {
+  display: none;
+}
+
+.largeMode {
+  display: block;
+}
+
 body {
-  margin: 1rem;
+  margin: 0;
+}
+
+#sections {
+  display: flex;
 }
 
 h1 {
-  justify-self: center;
+  text-align: center;
+  margin: 0.5rem;
 }
 
 h2 {
   margin-top: 0;
 }
 
-main {
-  display: flex;
-}
-
-#allPlayers {
-  min-width: 50%;
-  padding: 1rem;
-  border-right: 3px dotted black;
-}
-
-#selectedPlayer {
-  min-width: 33%;
-  flex-grow: 1;
-  padding: 1rem;
-}
-
-.TeamGrid {
-  margin: 1rem;
-  padding: 1rem;
-  border: 1px solid black;
-  border-radius: 1rem;
-}
-
-summary {
-  font-size: 2rem;
-}
-
-.PlayerGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minMax(min(100px, 100%), 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.PlayerCard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  border: 2px dashed darkgray;
-  border-radius: 10%;
-  background-color: gainsboro;
-}
-
-.selected {
-  border: 2px solid black;
-}
-
-.selected img {
-  border-bottom: 2px solid black;
-}
-
-.TeamGrid p {
-  margin: 0.5rem 0;
-  font-size: 1.5rem;
-}
-
 img {
-  height: 100%;
   width: 100%;
   border-radius: 10% 10% 0 0;
-}
-
-.playerInfo {
-  position: sticky;
-  top: 1rem;
-
-  padding: 1rem;
-  margin: 1rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  border: 1px solid black;
-  border-radius: 1.5rem;
-}
-
-.playerInfoDefault {
-  padding: 1rem;
-  margin: 1rem;
-  border: 1px solid black;
-  border-radius: 1rem;
-}
-
-.playerInfo img {
-  max-height: 100%;
-  border-radius: 1rem;
-  align-self: center;
-}
-
-.smallMode {
-  display: none;
-}
-
-.largeMode {
-  display: flex;
-}
-
-.tabBar {
-  display: flex;
-}
-
-.tabButton {
-  flex-grow: 1;
-  padding: 0.5rem;
 }
 
 @media (600px <= width <= 750px) {
   main {
     display: flex;
-  }
-
-  .TeamGrid {
-    flex-grow: 1;
-  }
-
-  .playerInfo {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .playerInfo img {
-    max-height: 50vh;
-    width: fit-content;
   }
 }
 
@@ -148,14 +46,5 @@ img {
 
   .smallMode {
     display: flex;
-  }
-
-  #allPlayers {
-    border-right: none;
-  }
-
-  .playerInfo {
-    display: flex;
-    flex-direction: column;
   }
 }

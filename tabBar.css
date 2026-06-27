@@ -1,0 +1,15 @@
+header {
+  position: sticky;
+  top: 0;
+  background-color: white;
+}
+
+.tabBar {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.tabButton {
+  padding: 0.5rem;
+  font-size: 1.25rem;
+}

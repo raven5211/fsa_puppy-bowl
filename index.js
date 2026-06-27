@@ -267,8 +267,11 @@ function MainLarge() {
   const $main = document.createElement("main");
   $main.classList.add("largeMode");
   $main.innerHTML = `
-    <Section1></Section1>
-    <Section2></Section2>
+    <h1>THE PUPPY BOWL</h1>
+    <div id="sections">
+      <Section1></Section1>
+      <Section2></Section2>
+    </div>
   `;
 
   $main.querySelector("Section1").replaceWith(Section1());
@@ -281,7 +284,10 @@ function MainSmall() {
   const $main = document.createElement("main");
   $main.classList.add("smallMode");
   $main.innerHTML = `
-    <TabBar></TabBar>
+    <header>
+      <h1>THE PUPPY BOWL</h1>
+      <TabBar></TabBar>
+    </header>
     <section></section>
   `;
 
@@ -544,7 +550,6 @@ function openSection(event, sectionName) {
 const render = () => {
   const $app = document.querySelector("#app");
   $app.innerHTML = `
-    <h1>THE PUPPY BOWL</h1>
     <main></main>
   `;
 
