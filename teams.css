@@ -28,6 +28,8 @@ summary {
 }
 
 .PlayerCard {
+  max-width: max(214px, 33%);
+  max-height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -51,6 +53,25 @@ summary {
   font-size: 1.5rem;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+label {
+  display: flex;
+  gap: 0.5rem;
+}
+
+input {
+  flex-grow: 1;
+}
+
+select {
+  flex-grow: 2;
+}
+
 @media (600px <= width <= 750px) {
   .TeamGrid {
     flex-grow: 1;
@@ -60,5 +81,9 @@ summary {
 @media (width < 600px) {
   #allPlayers {
     border-right: none;
+  }
+
+  .PlayerCard {
+    max-width: max(214px, 50%);
   }
 }

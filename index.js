@@ -26,7 +26,7 @@ import { fetchAllPlayers, fetchAllTeams } from "./puppyBowlFunctions.js";
  *    from the database and our current view without having to refresh
  *
  */
-export function render() {
+export async function render() {
   const $app = document.querySelector("#app");
   $app.innerHTML = `
     <main></main>
@@ -34,6 +34,7 @@ export function render() {
 
   $app.querySelector("main").replaceWith(MainLarge(), MainSmall());
 }
+window.render = render;
 
 /**
  * Initializes the app by calling render
@@ -46,6 +47,11 @@ async function init() {
   //set up sections data
   states.sections.set("allPlayers", Section1);
   states.sections.set("selectedPlayer", Section2);
+
+  states.groupsDetailsOpen.set(0, false);
+  for (const team of states.teams) {
+    states.groupsDetailsOpen.set(team.id, false);
+  }
 
   //render
   render();

@@ -15,6 +15,7 @@ export const states = {
   currentSection: "allPlayers",
   sections: new Map(),
 };
+window.states = states;
 // === CLASSES ===
 /**
  * class representing teams playing in the PuppyBowl

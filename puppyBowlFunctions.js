@@ -30,7 +30,6 @@ export const fetchAllPlayers = async () => {
     }
 
     states.players = newPlayers;
-    states.groupsDetailsOpen.set(0, false);
   } catch (error) {
     console.log("Failed to fetch players:", error);
   }
@@ -41,10 +40,6 @@ export const fetchAllPlayers = async () => {
  * This function should not be doing any rendering
  * Instead, this function should be keeping our state up to date
  * @param {number} playerId
- */
-/**
- * Note: In order to call fetchSinglePlayer() a player's id is required.
- * Unless we know the id of the player we are trying to fetch, we cannot call fetchSinglePlayer()
  */
 export const fetchSinglePlayer = async (playerId) => {
   try {
@@ -64,15 +59,6 @@ export const fetchSinglePlayer = async (playerId) => {
  * should appear in the all players page without having to refresh
  * @param {Object} newPlayer the player to add
  */
-/* Note: we need data from our user to be able to add a new player
- * What does that sound like we need?
- */
-/**
- * Note#2: addNewPlayer() expects you to pass in a
- * new player object when you call it. How can we
- * create a new player object and then pass it to addNewPlayer()?
- */
-
 export const addNewPlayer = async (newPlayer) => {
   try {
     const response = await fetch(PLAYERS_API, {
@@ -85,9 +71,11 @@ export const addNewPlayer = async (newPlayer) => {
 
     await fetchAllPlayers();
     await fetchAllTeams();
-    render();
+
+    return response;
   } catch (error) {
     console.log("Failed to add player:", error);
+    return null;
   }
 };
 
@@ -97,11 +85,6 @@ export const addNewPlayer = async (newPlayer) => {
  * the player should also be removed from our view without refreshing
  * @param {number} playerId the ID of the player to remove
  */
-/**
- * Note: In order to call removePlayer() a player's id is required.
- * Unless we know the id of the player we are trying to remove, we cannot call removePlayer()
- */
-
 export const removePlayer = async (playerId) => {
   try {
     const response = await fetch(`${PLAYERS_API}/${playerId}`, {
@@ -109,11 +92,12 @@ export const removePlayer = async (playerId) => {
     });
 
     await fetchAllPlayers();
-    render();
   } catch (error) {
     console.log("Failed to remove player:", error);
   }
 };
+
+window.removePlayer = removePlayer;
 
 /**
  * Fetches all Teams from the API.
@@ -130,7 +114,6 @@ export const fetchAllTeams = async () => {
     for (const team of teamsData) {
       const newTeam = Object.assign(new Team(), team);
       newTeams.push(newTeam);
-      states.groupsDetailsOpen.set(newTeam.id, false);
     }
 
     states.teams = newTeams;
