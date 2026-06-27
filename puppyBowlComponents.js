@@ -301,9 +301,10 @@ async function submitForm(form) {
     breed: breed,
     status: status,
     imageUrl: imageUrl,
-    team: team,
+    teamId: team,
   };
 
+  console.log(newPlayer);
   const response = await addNewPlayer(newPlayer);
 
   if (response !== null) {
@@ -313,11 +314,13 @@ async function submitForm(form) {
     const formData = await response.json();
     const targetId = formData.data.newPlayer.id;
     const players = states.players;
-    states.selectedPlayer = players.find((player) => player.id === targetId);
 
+    states.selectedPlayer = players.find((player) => player.id === targetId);
     states.currentSection = "selectedPlayer";
 
-    await render();
+    console.log();
+
+    await render(states.selectedPlayer);
     return newPlayer;
   } else {
     return null;
