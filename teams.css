@@ -11,20 +11,22 @@
 
 .TeamGrid {
   margin: 1rem;
-  padding: 1rem;
   border: 1px solid black;
   border-radius: 1rem;
 }
 
 summary {
+  padding: 1rem;
   font-size: 2rem;
+  cursor: pointer;
 }
 
 .PlayerGrid {
+  padding: 1rem;
+  padding-top: 0;
   display: grid;
   grid-template-columns: repeat(auto-fit, minMax(min(100px, 100%), 1fr));
   gap: 1rem;
-  margin-top: 1rem;
 }
 
 .PlayerCard {

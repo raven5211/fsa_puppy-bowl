@@ -42,6 +42,7 @@
   .playerInfo {
     display: flex;
     flex-direction: column;
+    gap: 0;
   }
 
   .playerInfo img {
@@ -54,5 +55,6 @@
     position: static;
     display: flex;
     flex-direction: column;
+    gap: 0;
   }
 }
