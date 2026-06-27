@@ -16,14 +16,17 @@
 }
 
 summary {
+  background-color: white;
+  border-bottom: 1px solid black;
+
   padding: 1rem;
   font-size: 2rem;
+  border-radius: 1rem;
   cursor: pointer;
 }
 
 .PlayerGrid {
   padding: 1rem;
-  padding-top: 0;
   display: grid;
   grid-template-columns: repeat(auto-fit, minMax(min(100px, 100%), 1fr));
   gap: 1rem;
@@ -62,7 +65,6 @@ summary {
 
 .TeamGrid > p {
   margin: 1rem;
-  margin-top: 0;
 }
 
 form {
@@ -84,6 +86,10 @@ select {
   flex-grow: 2;
 }
 
+form button {
+  margin-top: 0.5rem;
+}
+
 @media (600px <= width <= 750px) {
   .TeamGrid {
     flex-grow: 1;
@@ -93,6 +99,11 @@ select {
 @media (width < 600px) {
   #allPlayers {
     border-right: none;
+  }
+
+  summary {
+    position: sticky;
+    top: 6rem;
   }
 
   .PlayerCard {
