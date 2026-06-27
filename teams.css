@@ -41,6 +41,12 @@ summary {
   background-color: gainsboro;
 }
 
+.PlayerCard p {
+  margin: 0.5rem;
+  flex-grow: 1;
+  justify-self: center;
+}
+
 .selected {
   border: 2px solid black;
   background-color: darkgray;
@@ -51,9 +57,12 @@ summary {
 }
 
 .TeamGrid p {
+  font-size: 1.5rem;
+}
+
+.TeamGrid > p {
   margin: 1rem;
   margin-top: 0;
-  font-size: 1.5rem;
 }
 
 form {

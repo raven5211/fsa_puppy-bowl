@@ -34,8 +34,10 @@
 }
 
 .deleteButton {
+  font-size: 1rem;
   border: 1px solid black;
-  border-radius: 0.33rem;
+  border-radius: 0.5rem;
+  grid-column: span 2;
 }
 
 @media (600px <= width <= 750px) {
