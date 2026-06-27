@@ -262,7 +262,7 @@ function CreateForm() {
 
     <label for="imageURL">
       Image URL:
-      <input type="url" name="imageURL" id="imageURL" placeholder="imageURL" />
+      <input type="url" name="imageURL" id="imageURL" placeholder="url (leave black for default image)" />
     </label>
     
     <label for="team">
