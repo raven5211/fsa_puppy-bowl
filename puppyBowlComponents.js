@@ -90,6 +90,9 @@ function TabBar() {
 function TabButton(sectionName) {
   const $button = document.createElement("button");
   $button.classList.add("tabButton");
+  if (sectionName === states.currentSection) {
+    $button.classList.add("selectedButton");
+  }
 
   if (sectionName === "allPlayers") {
     $button.innerHTML = "All Players";

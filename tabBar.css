@@ -13,3 +13,7 @@ header {
   padding: 0.5rem;
   font-size: 1.25rem;
 }
+
+.selectedButton {
+  background-color: darkgray;
+}
