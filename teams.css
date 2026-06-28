@@ -90,6 +90,11 @@ form button {
   margin-top: 0.5rem;
 }
 
+summary {
+  position: sticky;
+  top: 0;
+}
+
 @media (600px <= width <= 750px) {
   .TeamGrid {
     flex-grow: 1;
@@ -102,7 +107,6 @@ form button {
   }
 
   summary {
-    position: sticky;
     top: 6rem;
   }
 
